@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Started - Join Our Waiting List</title>
+    <meta name="description"
+        content="Your download has started. Join our art course waiting list for exclusive updates.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Background Elements -->
+    <div class="bg-gradient"></div>
+    <div class="bg-pattern"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Success Header -->
+        <header class="confirmation-header">
+            <div class="success-checkmark">
+                <svg viewBox="0 0 52 52">
+                    <circle cx="26" cy="26" r="25" fill="none" />
+                    <path fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                </svg>
+            </div>
+            <h1 class="confirmation-title">Download Started!</h1>
+            <p class="confirmation-subtitle">Your resource should download automatically</p>
+        </header>
+
+        <!-- Backup Download Section -->
+        <section class="backup-download">
+            <div class="info-card">
+                <p class="info-text">If your download didn't start automatically:</p>
+                <button id="backupDownloadBtn" class="backup-btn">
+                    <span>Click Here to Download</span>
+                    <span class="btn-icon">⬇</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Waiting List Section - New Users -->
+        <section id="waitingListSection" class="waitlist-section">
+            <div class="waitlist-card">
+                <div class="waitlist-header">
+                    <h2>🎨 Join Our Art Course Waiting List</h2>
+                    <p>Be the first to know when we launch our premium drawing courses</p>
+                </div>
+
+                <div class="counter-display">
+                    <div class="counter-badge">
+                        <span class="counter-number" id="counterNumber">0</span>
+                        <span class="counter-label">people already interested!</span>
+                    </div>
+                </div>
+
+                <form id="waitlistForm" class="waitlist-form">
+                    <div class="form-group">
+                        <label for="courseType">
+                            <span class="label-text">Which course interests you?</span>
+                            <span class="required">*</span>
+                        </label>
+                        <select id="courseType" name="courseType" required>
+                            <option value="">Select a course...</option>
+                            <option value="Beginner Drawing">Beginner Drawing Fundamentals</option>
+                            <option value="Portrait Drawing">Portrait Drawing Mastery</option>
+                            <option value="Landscape Art">Landscape & Nature Art</option>
+                            <option value="Character Design">Character Design & Illustration</option>
+                            <option value="Digital Art">Digital Art Techniques</option>
+                            <option value="Sketching">Advanced Sketching</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="artType">
+                            <span class="label-text">What type of art do you want to learn?</span>
+                            <span class="required">*</span>
+                        </label>
+                        <select id="artType" name="artType" required>
+                            <option value="">Select art type...</option>
+                            <option value="Realistic Art">Realistic Art</option>
+                            <option value="Abstract Art">Abstract Art</option>
+                            <option value="Anime/Manga">Anime/Manga Style</option>
+                            <option value="Cartoon/Comic">Cartoon/Comic Art</option>
+                            <option value="Traditional Art">Traditional Art</option>
+                            <option value="Mixed Media">Mixed Media</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="waitlistSubmitBtn">
+                        <span class="btn-text">Join Waiting List</span>
+                        <span class="btn-icon">→</span>
+                    </button>
+
+                    <div class="loading-state" id="waitlistLoading">
+                        <div class="spinner"></div>
+                        <p>Adding you to the list...</p>
+                    </div>
+                </form>
+
+                <div id="waitlistSuccess" class="success-message hidden">
+                    <div class="success-icon">🎉</div>
+                    <h3>You're on the list!</h3>
+                    <p>We'll notify you as soon as the course launches.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Already on Waiting List Section - Returning Users -->
+        <section id="existingInterestSection" class="existing-interest-section hidden">
+            <div class="existing-card">
+                <div class="badge-success">✅</div>
+                <h2>You're Already on the Waiting List!</h2>
+                <p class="existing-subtitle">You're one of <span id="existingCounter">0</span> people waiting for our
+                    courses</p>
+
+                <div class="current-selection">
+                    <h3>Your Current Preferences:</h3>
+                    <div class="preference-display">
+                        <div class="preference-item">
+                            <span class="preference-label">Course:</span>
+                            <span class="preference-value" id="currentCourse">-</span>
+                        </div>
+                        <div class="preference-item">
+                            <span class="preference-label">Art Type:</span>
+                            <span class="preference-value" id="currentArtType">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="updatePreferencesBtn" class="secondary-btn">
+                    Update My Preferences
+                </button>
+
+                <!-- Update Form (Hidden by default) -->
+                <form id="updateForm" class="update-form hidden">
+                    <div class="form-group">
+                        <label for="updateCourseType">
+                            <span class="label-text">Course Interest</span>
+                        </label>
+                        <select id="updateCourseType" name="updateCourseType">
+                            <option value="">Select a course...</option>
+                            <option value="Beginner Drawing">Beginner Drawing Fundamentals</option>
+                            <option value="Portrait Drawing">Portrait Drawing Mastery</option>
+                            <option value="Landscape Art">Landscape & Nature Art</option>
+                            <option value="Character Design">Character Design & Illustration</option>
+                            <option value="Digital Art">Digital Art Techniques</option>
+                            <option value="Sketching">Advanced Sketching</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="updateArtType">
+                            <span class="label-text">Art Type</span>
+                        </label>
+                        <select id="updateArtType" name="updateArtType">
+                            <option value="">Select art type...</option>
+                            <option value="Realistic Art">Realistic Art</option>
+                            <option value="Abstract Art">Abstract Art</option>
+                            <option value="Anime/Manga">Anime/Manga Style</option>
+                            <option value="Cartoon/Comic">Cartoon/Comic Art</option>
+                            <option value="Traditional Art">Traditional Art</option>
+                            <option value="Mixed Media">Mixed Media</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <span class="btn-text">Update Preferences</span>
+                        <span class="btn-icon">✓</span>
+                    </button>
+                </form>
+
+                <div id="updateSuccess" class="success-message hidden">
+                    <div class="success-icon">✓</div>
+                    <p>Preferences updated successfully!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Thank you for being part of our creative community! 🎨</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

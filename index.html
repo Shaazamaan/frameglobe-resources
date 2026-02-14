@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Your Free Art Resource</title>
+    <meta name="description" content="Download exclusive art drawing resources and join our waiting list for premium courses">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="bg-gradient"></div>
+    <div class="bg-pattern"></div>
+    
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Hero Section -->
+        <header class="hero">
+            <div class="logo-badge">🎨</div>
+            <h1 class="hero-title">Get Your Free Art Resource</h1>
+            <p class="hero-subtitle">Thanks for engaging with our content! Access exclusive drawing materials instantly.</p>
+        </header>
+
+        <!-- Lead Capture Form (Hidden for returning users) -->
+        <section id="leadFormSection" class="form-section">
+            <div class="form-card">
+                <div class="form-header">
+                    <h2>Quick Access Form</h2>
+                    <p>Just a few details to get your free download</p>
+                </div>
+                
+                <form id="leadForm" class="lead-form">
+                    <div class="form-group">
+                        <label for="name">
+                            <span class="label-text">Full Name</span>
+                            <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="name" 
+                            name="name" 
+                            required 
+                            placeholder="Enter your full name"
+                            autocomplete="name"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="city">
+                            <span class="label-text">City / Location</span>
+                            <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="city" 
+                            name="city" 
+                            required 
+                            placeholder="Where are you from?"
+                            autocomplete="address-level2"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">
+                            <span class="label-text">Email Address</span>
+                            <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            required 
+                            placeholder="your@email.com"
+                            autocomplete="email"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">
+                            <span class="label-text">Phone Number</span>
+                            <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="tel" 
+                            id="phone" 
+                            name="phone" 
+                            required 
+                            placeholder="+91 12345 67890"
+                            autocomplete="tel"
+                        >
+                    </div>
+
+                    <div class="privacy-notice">
+                        <input type="checkbox" id="consent" name="consent" required>
+                        <label for="consent">
+                            I agree to receive the resource and updates. Your data is safe with us.
+                        </label>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <span class="btn-text">Get My Resource</span>
+                        <span class="btn-icon">→</span>
+                    </button>
+
+                    <div class="loading-state" id="loadingState">
+                        <div class="spinner"></div>
+                        <p>Processing your request...</p>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Direct Download Section (For returning users) -->
+        <section id="directDownloadSection" class="download-section hidden">
+            <div class="download-card">
+                <div class="success-icon">✓</div>
+                <h2>Welcome Back!</h2>
+                <p>Your download is ready. Click below to get your resource.</p>
+                <button id="directDownloadBtn" class="download-btn">
+                    <span>Download Resource</span>
+                    <span class="btn-icon">⬇</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>🔒 Your information is secure and will never be shared</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
