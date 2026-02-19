@@ -15,37 +15,37 @@
     --color-secondary: #ec4899;
     --color-success: #10b981;
     --color-warning: #f59e0b;
-    
+
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
     --gradient-success: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
-    
+
     /* Neutral Colors */
     --color-bg: #0f172a;
     --color-bg-secondary: #1e293b;
     --color-text: #f1f5f9;
     --color-text-secondary: #cbd5e1;
     --color-border: rgba(255, 255, 255, 0.1);
-    
+
     /* Spacing */
     --spacing-xs: 0.5rem;
     --spacing-sm: 1rem;
     --spacing-md: 1.5rem;
     --spacing-lg: 2rem;
     --spacing-xl: 3rem;
-    
+
     /* Border Radius */
     --radius-sm: 0.5rem;
     --radius-md: 1rem;
     --radius-lg: 1.5rem;
-    
+
     /* Shadows */
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
     --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.2);
     --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.3);
     --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.3);
-    
+
     /* Transitions */
     --transition-fast: 0.2s ease;
     --transition-normal: 0.3s ease;
@@ -71,15 +71,20 @@ body {
     width: 200%;
     height: 200%;
     background: radial-gradient(circle at 30% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 70% 50%, rgba(236, 72, 153, 0.15) 0%, transparent 50%);
+        radial-gradient(circle at 70% 50%, rgba(236, 72, 153, 0.15) 0%, transparent 50%);
     animation: rotateGradient 20s linear infinite;
     pointer-events: none;
     z-index: -1;
 }
 
 @keyframes rotateGradient {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .bg-pattern {
@@ -88,7 +93,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
+    background-image:
         linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     background-size: 50px 50px;
@@ -123,8 +128,15 @@ body {
 }
 
 @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 .hero-title {
@@ -367,7 +379,9 @@ select {
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* ============================================
@@ -401,7 +415,9 @@ select {
 }
 
 @keyframes stroke {
-    100% { stroke-dashoffset: 0; }
+    100% {
+        stroke-dashoffset: 0;
+    }
 }
 
 .confirmation-header {
@@ -552,10 +568,233 @@ select {
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* ============================================
+   VIP EARLY BIRD OFFER (TRIPWIRE)
+   ============================================ */
+.early-bird-section {
+    margin-bottom: var(--spacing-lg);
+    animation: fadeInUp 0.6s ease 0.1s backwards;
+}
+
+.offer-card {
+    background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+    border: 2px solid #ffd700;
+    /* Gold Border */
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+.offer-ribbon {
+    position: absolute;
+    top: 20px;
+    right: -35px;
+    background: #ffd700;
+    color: #000;
+    width: 150px;
+    text-align: center;
+    font-weight: 800;
+    font-size: 0.75rem;
+    padding: 5px 0;
+    transform: rotate(45deg);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+.offer-header h2 {
+    font-size: 1.8rem;
+    background: linear-gradient(to right, #fff, #ffd700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--spacing-xs);
+}
+
+.offer-sub {
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    max-width: 400px;
+    margin: 0 auto var(--spacing-lg);
+}
+
+/* Bonus Stack */
+.bonus-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+    text-align: left;
+}
+
+.bonus-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px 15px;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.bonus-icon {
+    font-size: 1.5rem;
+}
+
+.bonus-details h3 {
+    font-size: 0.95rem;
+    color: #fff;
+    margin-bottom: 2px;
+}
+
+.bonus-details p {
+    font-size: 0.8rem;
+    color: #aaa;
+    line-height: 1.2;
+}
+
+.value-tag {
+    display: block;
+    font-size: 0.7rem;
+    color: #ffd700;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-top: 2px;
+}
+
+/* Price Breakdown */
+.price-breakdown {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: var(--radius-md);
+    padding: 15px;
+    margin-bottom: var(--spacing-lg);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.total-value {
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.strike {
+    text-decoration: line-through;
+    color: #ef4444;
+    /* Red strike */
+}
+
+.final-price {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.highlight {
+    color: #ffd700;
+    font-size: 1.5rem;
+}
+
+/* VIP Button */
+.vip-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: linear-gradient(to right, #f59e0b, #ffd700);
+    color: #000;
+    text-decoration: none;
+    padding: 15px;
+    border-radius: var(--radius-md);
+    font-weight: 800;
+    margin-bottom: 15px;
+    transition: transform 0.2s;
+    box-shadow: 0 5px 20px rgba(245, 158, 11, 0.3);
+}
+
+.vip-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(245, 158, 11, 0.5);
+}
+
+.btn-text {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-sub {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    font-weight: 600;
+}
+
+.pulse-animation {
+    animation: pulse-yellow 2s infinite;
+}
+
+@keyframes pulse-yellow {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 215, 0, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+    }
+}
+
+.guarantee-text {
+    font-size: 0.75rem;
+    color: #666;
+    margin-top: 10px;
+}
+
+.divider-text {
+    text-align: center;
+    color: #666;
+    font-weight: 700;
+    margin: 20px 0;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    position: relative;
+}
+
+.divider-text::before,
+.divider-text::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.divider-text::before {
+    left: 0;
+}
+
+.divider-text::after {
+    right: 0;
+}
+
+.simple-card {
+    background: rgba(30, 41, 59, 0.4);
+    /* Less prominent bg */
+    border: 1px dashed rgba(255, 255, 255, 0.1);
 }
 
 /* ============================================
@@ -565,22 +804,22 @@ select {
     .container {
         padding: var(--spacing-md);
     }
-    
+
     .hero-title {
         font-size: 2rem;
     }
-    
+
     .hero-subtitle {
         font-size: 1rem;
     }
-    
+
     .form-card,
     .download-card,
     .waitlist-card,
     .existing-card {
         padding: var(--spacing-lg);
     }
-    
+
     .counter-number {
         font-size: 2.5rem;
     }
@@ -590,11 +829,11 @@ select {
     .hero-title {
         font-size: 1.75rem;
     }
-    
+
     .logo-badge {
         font-size: 3rem;
     }
-    
+
     .form-card,
     .waitlist-card {
         padding: var(--spacing-md);

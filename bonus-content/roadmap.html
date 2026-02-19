@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30-Day Zero to Hero Sketch Roadmap</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
+
+        :root {
+            --primary: #1a1a1a;
+            --accent: #6C5CE7;
+            --bg: #ffffff;
+            --paper: #f8f9fa;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #e0e0e0;
+            /* Grey background for screen view */
+            display: flex;
+            justify-content: center;
+            padding: 40px;
+            color: var(--primary);
+        }
+
+        .page {
+            width: 210mm;
+            height: 297mm;
+            background: white;
+            padding: 20mm;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .subtitle {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Calendar Grid */
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            flex-grow: 1;
+        }
+
+        .day-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 10px;
+            background: var(--paper);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .week-label {
+            grid-column: 1 / -1;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #888;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .week-label::after {
+            content: '';
+            flex-grow: 1;
+            height: 1px;
+            background: #eee;
+        }
+
+        .day-number {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+
+        .task {
+            font-size: 10px;
+            line-height: 1.3;
+            color: #444;
+            flex-grow: 1;
+        }
+
+        .checkbox {
+            width: 15px;
+            height: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            margin-top: 8px;
+            align-self: flex-end;
+            cursor: pointer;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 10px;
+            color: #888;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        /* Print Settings */
+        @media print {
+            body {
+                background: none;
+                padding: 0;
+            }
+
+            .page {
+                box-shadow: none;
+                width: 100%;
+                height: 100%;
+                padding: 15mm;
+                /* Slightly less padding for print safety */
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page">
+        <header>
+            <div class="subtitle">30-Day Challenge</div>
+            <h1>Zero to Hero Sketch Roadmap</h1>
+            <p style="font-size: 12px; color: #666;">Consistency is the key to mastery. Tick one box every single day.
+            </p>
+        </header>
+
+        <div class="calendar">
+
+            <!-- WEEK 1 -->
+            <div class="week-label">Week 1: Deconstruction & Control</div>
+
+            <div class="day-card">
+                <div class="day-number">Day 01</div>
+                <div class="task">Draw 10 pages of straight parallel lines (Horizontal, Vertical, Diagonal).</div>
+                <div class="checkbox"></div>
+            </div>
+            <div class="day-card">
+                <div class="day-number">Day 02</div>
+                <div class="task">Draw 10 pages of circles. Aim for perfect closure and roundness.</div>
+                <div class="checkbox"></div>
+            </div>
+            <div class="day-card">
+                <div class="day-number">Day 03</div>
+                <div class="task">Connect the dots. Place random dots and connect them with straight lines.</div>
+                <div class="checkbox"></div>
+            </div>
+            <div class="day-card">
+                <div class="day-number">Day 04</div>
+                <div class="task">Draw continuous "S" curves. Fill 5 pages. Keep movement fluid.</div>
+                <div class="checkbox"></div>
+            </div>
+            <div class="day-card">
+                <div class="day-number">Day 05</div>
+                <div class="task">Draw 2D shapes: Squares, Triangles, Rectangles. vary sizes.</div>
+                <div class="checkbox"></div>
+            </div>
+
+            <!-- WEEK 2 -->
+            <div class="week-label">Week 2: 3D Form & Perspective</div>
+
+            <div class="day-card">
+                <div class="day-number">Day 06</div>
+                <div class="task">Draw cubes in 1-point perspective. Horizon line in the center.</div>
+                <div class="checkbox"></div>
+            </div>
+            <div class="day-card">
+                <div class="day-number">Day 07</div>
+                <div class="task">Draw cylinders. Focus on the ellipses (ovals) at the top and bottom.</div>
+                <div class="checkbox"></div>
+            </div>
+            <div class="day-card">
+                <div class="day-number">Day 08</div>
+                <div class="task">Draw spheres. Add a simple shadow to show volume.</div>
+                <div class="checkbox"></div>
+            </div>
+            <div class="day-card">
+                <div class="day-number">Day 09</div>
+                <div class="task">Combine shapes. Stack a cube on a cylinder.</div>
+                <div class="checkbox"></div>
+            </div>
+            <div class="day-card">
+                <div class="day-number">Day 10</div>
+                <div class="task">Draw floating boxes. Rotate them in space.</div>
+                <div class="checkbox"></div>
+            </div>
+
+            <!-- WEEK 3 -->
+            <div class="week-label">Week 3: Observation</div>
+
+            <div class="day-card">
+                <div class="day-number">Day 11</div>
+                <div class="task">Draw your coffee mug using only cylinders.</div>
+                <div class="checkbox"></div>
+            </div>
+            <div class="day-card">
+                <div class="day-number">Day 12</div>
+                <div class="task">Draw a book. It's just a modified box.</div>
+                <div class="checkbox"></div>
+            </div>
+            <div class="day-card">
+                <div class="day-number">Day 13</div>
+                <div class="task">Draw a fruit (Apple/Orange). Look for the sphere structure.</div>
+                <div class="checkbox"></div>
+            </div>
+            <div class="day-card">
+                <div class="day-number">Day 14</div>
+                <div class="task">Draw your phone. Pay attention to the corner curves.</div>
+                <div class="checkbox"></div>
+            </div>
+            <div class="day-card">
+                <div class="day-number">Day 15</div>
+                <div class="task">Draw a bottle. Combine cylinder (body) + tapered cylinder (neck).</div>
+                <div class="checkbox"></div>
+            </div>
+
+            <!-- WEEK 4 -->
+            <div class="week-label">Week 4: Synthesis & Shading</div>
+
+            <div class="day-card">
+                <div class="day-number">Day 16</div>
+                <div class="task">Value Scale. Draw 5 boxes, shade from White to Black.</div>
+                <div class="checkbox"></div>
+            </div>
+            <div class="day-card">
+                <div class="day-number">Day 17</div>
+                <div class="task">Sphere Shading. Core shadow, cast shadow, highlight.</div>
+                <div class="checkbox"></div>
+            </div>
+            <div class="day-card">
+                <div class="day-number">Day 18</div>
+                <div class="task">Simple Still Life. Detailed drawing of 2 objects together.</div>
+                <div class="checkbox"></div>
+            </div>
+            <div class="day-card">
+                <div class="day-number">Day 19</div>
+                <div class="task">Drapery. Draw a cloth draped over a chair. Simple folds.</div>
+                <div class="checkbox"></div>
+            </div>
+            <div class="day-card">
+                <div class="day-number">Day 20</div>
+                <div class="task">Final Challenge. Draw your hand holding a pencil.</div>
+                <div class="checkbox"></div>
+            </div>
+
+        </div>
+
+        <footer>
+            <p>Created exclusively for the FrameGlobe Community • FrameGlobe.com</p>
+        </footer>
+    </div>
+
+</body>
+
+</html>
