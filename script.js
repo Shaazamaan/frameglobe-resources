@@ -3,13 +3,14 @@
 // ============================================
 const CONFIG = {
     // ✅ Google Apps Script Backend URL - CONNECTED!
-    BACKEND_URL: 'https://script.google.com/macros/s/AKfycbyopE5PawXsAdZmN_9MPxxeOAQI0m_X44UUFGeIFsnebPuItTdrTd6Ti0s6SAADNa2b/exec',
+    BACKEND_URL: 'https://script.google.com/macros/s/AKfycbyopE5PawXsAdZmN_9MPXxeOAQI0m_X44UUFGeIFsnebPuItTdrTd6Ti0s6SAADNa2b/exec',
 
     // LocalStorage keys
     STORAGE_KEYS: {
         USER_EMAIL: 'art_user_email',
         USER_NAME: 'art_user_name',
-        DOWNLOAD_LINK: 'art_download_link'
+        DOWNLOAD_LINK: 'art_download_link',
+        USER_ROLE: 'art_user_role'
     }
 };
 
@@ -38,9 +39,10 @@ function setLoadingState(formId, buttonId, loadingId, isLoading) {
     }
 }
 
-function saveToLocalStorage(email, name) {
+function saveToLocalStorage(email, name, role = 'User') {
     localStorage.setItem(CONFIG.STORAGE_KEYS.USER_EMAIL, email);
     if (name) localStorage.setItem(CONFIG.STORAGE_KEYS.USER_NAME, name);
+    localStorage.setItem(CONFIG.STORAGE_KEYS.USER_ROLE, role);
 }
 
 function getFromLocalStorage(key) {
@@ -359,10 +361,10 @@ if (document.getElementById('loginForm')) {
 
             if (userData && userData.exists) {
                 // User found - save to local storage
-                saveToLocalStorage(email, userData.name || '');
+                saveToLocalStorage(email, userData.name || '', userData.role || 'User');
 
                 // Redirect based on role
-                if (userData.isAdmin) {
+                if (userData.role === 'Admin' || userData.role === 'Staff') {
                     window.location.href = 'admin.html';
                 } else {
                     window.location.href = 'index.html';
@@ -380,14 +382,48 @@ if (document.getElementById('loginForm')) {
     });
 }
 // ============================================
+// ADMIN DASHBOARD - TABS & RBAC
+// ============================================
+
+window.switchTab = (tabId) => {
+    // Hide all sections
+    document.querySelectorAll('section.admin-card').forEach(s => s.classList.add('hidden'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+    // Show selected
+    document.getElementById(`${tabId}Section`).classList.remove('hidden');
+
+    // Find button and set active
+    const btn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.textContent.toLowerCase().includes(tabId));
+    if (btn) btn.classList.add('active');
+
+    // Trigger data load
+    const adminEmail = getFromLocalStorage(CONFIG.STORAGE_KEYS.USER_EMAIL);
+    if (tabId === 'users') loadUsers(adminEmail);
+    if (tabId === 'analytics') loadAnalytics(adminEmail);
+};
+
+// ============================================
 // ADMIN.HTML - DASHBOARD LOGIC
 // ============================================
 if (document.getElementById('resourceTableBody')) {
     window.addEventListener('DOMContentLoaded', async () => {
         const adminEmail = getFromLocalStorage(CONFIG.STORAGE_KEYS.USER_EMAIL);
-        if (!adminEmail) {
+        const adminRole = getFromLocalStorage(CONFIG.STORAGE_KEYS.USER_ROLE);
+        const userName = getFromLocalStorage(CONFIG.STORAGE_KEYS.USER_NAME);
+
+        if (!adminEmail || (adminRole !== 'Admin' && adminRole !== 'Staff')) {
             window.location.href = 'login.html';
             return;
+        }
+
+        // Setup Welcome
+        document.getElementById('userWelcome').textContent = `Welcome back, ${userName || 'User'} (${adminRole})`;
+
+        // RBAC UI Visibility
+        if (adminRole === 'Admin') {
+            document.getElementById('usersTabBtn')?.classList.remove('hidden');
+            document.getElementById('analyticsTabBtn')?.classList.remove('hidden');
         }
 
         await loadResources(adminEmail);
@@ -403,8 +439,42 @@ if (document.getElementById('resourceTableBody')) {
         modal.classList.remove('hidden');
     });
 
-    document.getElementById('closeModalBtn').addEventListener('click', () => {
-        modal.classList.add('hidden');
+    // Modals
+    const closeResourceModal = document.getElementById('closeResourceModal');
+    const closeUserModal = document.getElementById('closeUserModal');
+
+    if (closeResourceModal) closeResourceModal.onclick = () => document.getElementById('resourceModal').classList.add('hidden');
+    if (closeUserModal) closeUserModal.onclick = () => document.getElementById('userModal').classList.add('hidden');
+
+    document.getElementById('addUserBtn')?.addEventListener('click', () => {
+        document.getElementById('userForm').reset();
+        document.getElementById('userModal').classList.remove('hidden');
+    });
+
+    document.getElementById('userForm')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const adminEmail = getFromLocalStorage(CONFIG.STORAGE_KEYS.USER_EMAIL);
+        const data = {
+            action: 'upsert-user',
+            adminEmail: adminEmail,
+            userEmail: document.getElementById('userEmail').value,
+            role: document.getElementById('userRole').value
+        };
+
+        try {
+            const response = await fetch(CONFIG.BACKEND_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            if (result.success) {
+                document.getElementById('userModal').classList.add('hidden');
+                loadUsers(adminEmail);
+            } else {
+                alert('Error: ' + result.error);
+            }
+        } catch (error) { console.error(error); }
     });
 
     resourceForm.addEventListener('submit', async (e) => {
@@ -471,6 +541,84 @@ async function loadResources(email) {
         console.error('Error loading resources:', error);
     }
 }
+
+// ============================================
+// ADMIN USER MANAGEMENT
+// ============================================
+
+async function loadUsers(adminEmail) {
+    const tableBody = document.getElementById('userTableBody');
+    if (!tableBody) return;
+
+    try {
+        const response = await fetch(`${CONFIG.BACKEND_URL}?action=get-all-users&email=${encodeURIComponent(adminEmail)}`);
+        const result = await response.json();
+
+        if (result.success) {
+            tableBody.innerHTML = '';
+            result.users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.email}</td>
+                    <td><span class="role-badge badge-${user.role.toLowerCase()}">${user.role}</span></td>
+                    <td class="action-btns">
+                        ${!user.isHardcoded ? `<button class="btn-small btn-delete" onclick="deleteUser('${user.email}')">Remove</button>` : '<span style="color:#666">System Lock</span>'}
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+    } catch (error) { console.error('Error loading users:', error); }
+}
+
+window.deleteUser = async (userEmail) => {
+    if (!confirm(`Remove access for ${userEmail}?`)) return;
+    const adminEmail = getFromLocalStorage(CONFIG.STORAGE_KEYS.USER_EMAIL);
+    const response = await fetch(CONFIG.BACKEND_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete-user', adminEmail, userEmail })
+    });
+    const result = await response.json();
+    if (result.success) loadUsers(adminEmail);
+};
+
+// ============================================
+// ADMIN ANALYTICS RENDERING
+// ============================================
+
+async function loadAnalytics(adminEmail) {
+    try {
+        const response = await fetch(`${CONFIG.BACKEND_URL}?action=get-admin-analytics&email=${encodeURIComponent(adminEmail)}`);
+        const result = await response.json();
+
+        if (result.success) {
+            const stats = result.stats;
+            document.getElementById('statTotalLeads').textContent = stats.totalLeads;
+            document.getElementById('statTotalWaitlist').textContent = stats.totalWaitlist;
+            document.getElementById('statConversionRate').textContent = stats.conversionRate + '%';
+
+            // Simple breakdown list
+            const breakdown = document.getElementById('categoryBreakdown');
+            breakdown.innerHTML = '<ul style="list-style:none; padding:0;">';
+            Object.entries(stats.categories).forEach(([cat, count]) => {
+                const percent = ((count / stats.totalWaitlist) * 100).toFixed(1);
+                breakdown.innerHTML += `
+                    <li style="margin-bottom:15px;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                            <span>${cat}</span>
+                            <span>${count} (${percent}%)</span>
+                        </div>
+                        <div style="height:8px; background:#333; border-radius:4px;">
+                            <div style="height:100%; width:${percent}%; background:var(--color-primary); border-radius:4px;"></div>
+                        </div>
+                    </li>`;
+            });
+            breakdown.innerHTML += '</ul>';
+        }
+    } catch (error) { console.error('Error loading analytics:', error); }
+}
+
 
 window.editResource = (postId, name, link) => {
     document.getElementById('modalTitle').textContent = 'Edit Resource';
