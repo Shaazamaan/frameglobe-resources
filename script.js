@@ -2,8 +2,8 @@
 // CONFIGURATION
 // ============================================
 const CONFIG = {
-    // ✅ Google Apps Script Backend URL - LIVE!
-    BACKEND_URL: 'https://script.google.com/macros/s/AKfycbyu6hLcWnoMKH4AEtr7fYVNxegacbiF9ie5dv916QQzh9TegsfZke3RQiqkNnhScHh2Fg/exec',
+    // ✅ Google Apps Script Backend URL - AUTOMATED!
+    BACKEND_URL: 'https://script.google.com/macros/s/AKfycbw7eeRTCQEXIDbLvrKD7YIHLSybXyxqozA1LpCMdiaD5dzFIU34fWPd8pq1guGXsBmZEQ/exec',
 
     // LocalStorage keys
     STORAGE_KEYS: {
