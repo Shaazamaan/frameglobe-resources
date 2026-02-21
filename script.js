@@ -14,6 +14,12 @@ const CONFIG = {
     }
 };
 
+// Global Fallback for Loader
+window.addEventListener('load', () => {
+    setTimeout(() => toggleGlobalLoader(false), 1500); // Failsafe
+});
+
+
 function toggleGlobalLoader(show) {
     const loader = document.getElementById('globalLoader');
     if (loader) {
@@ -543,10 +549,10 @@ async function loadResources(email) {
             result.resources.forEach(res => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${res.postId}</td>
-                    <td>${res.resourceName}</td>
-                    <td class="link-cell">${res.downloadLink.substring(0, 30)}...</td>
-                    <td class="action-btns">
+                    <td data-label="Post ID">${res.postId}</td>
+                    <td data-label="Resource Name">${res.resourceName}</td>
+                    <td data-label="Download Link" class="link-cell">${res.downloadLink.substring(0, 30)}...</td>
+                    <td data-label="Actions" class="action-btns">
                         <button class="btn-small btn-edit" style="background:var(--color-secondary)" onclick="copyResourceLink('${res.postId}', this)">Copy Link</button>
                         <button class="btn-small btn-edit" onclick="editResource('${res.postId}', '${res.resourceName}', '${res.downloadLink}')">Edit</button>
                         <button class="btn-small btn-delete" onclick="deleteResource('${res.postId}')">Delete</button>
@@ -554,7 +560,8 @@ async function loadResources(email) {
                 `;
                 tableBody.appendChild(row);
             });
-        } else {
+        }
+        else {
             // If not an admin, redirect back
             window.location.href = 'login.html';
         }
@@ -580,15 +587,16 @@ async function loadUsers(adminEmail) {
             result.users.forEach(user => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${user.email}</td>
-                    <td><span class="role-badge badge-${user.role.toLowerCase()}">${user.role}</span></td>
-                    <td class="action-btns">
+                    <td data-label="Member Email">${user.email}</td>
+                    <td data-label="Role"><span class="role-badge badge-${user.role.toLowerCase()}">${user.role}</span></td>
+                    <td data-label="Actions" class="action-btns">
                         ${!user.isHardcoded ? `<button class="btn-small btn-delete" onclick="deleteUser('${user.email}')">Remove</button>` : '<span style="color:#666">System Lock</span>'}
                     </td>
                 `;
                 tableBody.appendChild(row);
             });
         }
+
     } catch (error) { console.error('Error loading users:', error); }
 }
 
