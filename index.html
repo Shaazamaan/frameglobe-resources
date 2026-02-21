@@ -1,27 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Get Your Free Art Resource</title>
-    <meta name="description" content="Download exclusive art drawing resources and join our waiting list for premium courses">
+    <meta name="description"
+        content="Download exclusive art drawing resources and join our waiting list for premium courses">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
+    <!-- Global Loading Overlay -->
+    <div id="globalLoader" class="loading-overlay">
+        <div class="loader-logo">🎨</div>
+        <div class="spinner-large"></div>
+        <p>Loading FrameGlobe Resources...</p>
+    </div>
+
     <!-- Background Elements -->
+
     <div class="bg-gradient"></div>
     <div class="bg-pattern"></div>
-    
+
     <!-- Main Container -->
     <div class="container">
         <!-- Hero Section -->
         <header class="hero">
             <div class="logo-badge">🎨</div>
             <h1 class="hero-title">Get Your Free Art Resource</h1>
-            <p class="hero-subtitle">Thanks for engaging with our content! Access exclusive drawing materials instantly.</p>
+            <p class="hero-subtitle">Thanks for engaging with our content! Access exclusive drawing materials instantly.
+            </p>
         </header>
 
         <!-- Lead Capture Form (Hidden for returning users) -->
@@ -31,21 +43,15 @@
                     <h2>Quick Access Form</h2>
                     <p>Just a few details to get your free download</p>
                 </div>
-                
+
                 <form id="leadForm" class="lead-form">
                     <div class="form-group">
                         <label for="name">
                             <span class="label-text">Full Name</span>
                             <span class="required">*</span>
                         </label>
-                        <input 
-                            type="text" 
-                            id="name" 
-                            name="name" 
-                            required 
-                            placeholder="Enter your full name"
-                            autocomplete="name"
-                        >
+                        <input type="text" id="name" name="name" required placeholder="Enter your full name"
+                            autocomplete="name">
                     </div>
 
                     <div class="form-group">
@@ -53,14 +59,8 @@
                             <span class="label-text">City / Location</span>
                             <span class="required">*</span>
                         </label>
-                        <input 
-                            type="text" 
-                            id="city" 
-                            name="city" 
-                            required 
-                            placeholder="Where are you from?"
-                            autocomplete="address-level2"
-                        >
+                        <input type="text" id="city" name="city" required placeholder="Where are you from?"
+                            autocomplete="address-level2">
                     </div>
 
                     <div class="form-group">
@@ -68,14 +68,8 @@
                             <span class="label-text">Email Address</span>
                             <span class="required">*</span>
                         </label>
-                        <input 
-                            type="email" 
-                            id="email" 
-                            name="email" 
-                            required 
-                            placeholder="your@email.com"
-                            autocomplete="email"
-                        >
+                        <input type="email" id="email" name="email" required placeholder="your@email.com"
+                            autocomplete="email">
                     </div>
 
                     <div class="form-group">
@@ -83,14 +77,8 @@
                             <span class="label-text">Phone Number</span>
                             <span class="required">*</span>
                         </label>
-                        <input 
-                            type="tel" 
-                            id="phone" 
-                            name="phone" 
-                            required 
-                            placeholder="+91 12345 67890"
-                            autocomplete="tel"
-                        >
+                        <input type="tel" id="phone" name="phone" required placeholder="+91 12345 67890"
+                            autocomplete="tel">
                     </div>
 
                     <div class="privacy-notice">
@@ -138,4 +126,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>

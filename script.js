@@ -14,9 +14,17 @@ const CONFIG = {
     }
 };
 
-// ============================================
-// UTILITY FUNCTIONS
-// ============================================
+function toggleGlobalLoader(show) {
+    const loader = document.getElementById('globalLoader');
+    if (loader) {
+        if (show) {
+            loader.classList.remove('fade-out');
+        } else {
+            loader.classList.add('fade-out');
+        }
+    }
+}
+
 function getURLParams() {
     const params = new URLSearchParams(window.location.search);
     return {
@@ -24,6 +32,7 @@ function getURLParams() {
         igUser: params.get('ig_user') || ''
     };
 }
+
 
 function setLoadingState(formId, buttonId, loadingId, isLoading) {
     const button = document.getElementById(buttonId);
