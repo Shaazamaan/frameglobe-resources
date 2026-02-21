@@ -60,6 +60,32 @@ function saveToLocalStorage(email, name, role = 'User') {
     localStorage.setItem(CONFIG.STORAGE_KEYS.USER_ROLE, role);
 }
 
+// Validation Helpers
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function isValidPhone(phone) {
+    // Basic check for 10 digits, optional +91 or space
+    return /^(\+91[\-\s]?)?[0-9]{10}$/.test(phone.replace(/\s/g, ''));
+}
+
+function showError(fieldId, message) {
+    const errorEl = document.getElementById(`${fieldId}Error`);
+    const inputEl = document.getElementById(fieldId);
+    if (errorEl) {
+        errorEl.textContent = message;
+        errorEl.classList.remove('hidden');
+    }
+    if (inputEl) inputEl.classList.add('error');
+}
+
+function clearErrors() {
+    document.querySelectorAll('.error-msg').forEach(el => el.textContent = '');
+    document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+}
+
+
 function getFromLocalStorage(key) {
     return localStorage.getItem(key);
 }
@@ -179,21 +205,69 @@ if (document.getElementById('leadForm')) {
         }
     });
 
-    // Lead form submission
+    // Dynamic "Other" handling
+    ['courseType', 'artType', 'updateCourseType', 'updateArtType'].forEach(id => {
+        const select = document.getElementById(id);
+        const otherInput = document.getElementById(`${id}Other`);
+        if (select && otherInput) {
+            select.addEventListener('change', () => {
+                if (select.value === 'Other') {
+                    otherInput.classList.remove('hidden');
+                    otherInput.required = true;
+                } else {
+                    otherInput.classList.add('hidden');
+                    otherInput.required = false;
+                }
+            });
+        }
+    });
+
+    // Payment Button Simulation
+    const paymentBtn = document.getElementById('paymentBtn');
+    if (paymentBtn) {
+        paymentBtn.addEventListener('click', (e) => {
+            // In a real app, this would redirect to Razorpay/Stripe
+            // For now, we simulate the "Interest Tagged" state
+            paymentBtn.innerHTML = '<span class="btn-text">Opening Secure Payment...</span>';
+            setTimeout(() => {
+                paymentBtn.innerHTML = '<span class="btn-text">Verification Pending</span>';
+                paymentBtn.style.background = '#666';
+            }, 2000);
+        });
+    }
+
+    // Waiting list form submission (new users)
+
+
     document.getElementById('leadForm').addEventListener('submit', async (e) => {
         e.preventDefault();
+        clearErrors();
+
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const city = document.getElementById('city').value;
+        let hasError = false;
+
+        if (name.length < 2) { showError('name', 'Please enter your full name'); hasError = true; }
+        if (!isValidEmail(email)) { showError('email', 'Please enter a valid email address'); hasError = true; }
+        if (!isValidPhone(phone)) { showError('phone', 'Please enter a valid 10-digit phone number'); hasError = true; }
+        if (!city) { showError('city', 'Please enter your city'); hasError = true; }
+
+        if (hasError) return;
 
         setLoadingState('leadForm', 'submitBtn', 'loadingState', true);
 
         const { postId, igUser } = getURLParams();
         const formData = {
-            name: document.getElementById('name').value,
-            city: document.getElementById('city').value,
-            email: document.getElementById('email').value,
-            phone: document.getElementById('phone').value,
+            name,
+            city,
+            email,
+            phone,
             postId,
             igUser
         };
+
 
         try {
             const response = await submitLeadForm(formData);
@@ -267,6 +341,11 @@ if (document.getElementById('waitlistForm') || document.getElementById('updateFo
                     document.getElementById('currentCourse').textContent = userData.courseType;
                     document.getElementById('currentArtType').textContent = userData.artType;
 
+                    // Update offer section text
+                    const offerCourseName = document.getElementById('courseNameOffer');
+                    if (offerCourseName) offerCourseName.textContent = userData.courseType;
+
+
                     // Pre-fill update form
                     document.getElementById('updateCourseType').value = userData.courseType;
                     document.getElementById('updateArtType').value = userData.artType;
@@ -296,8 +375,19 @@ if (document.getElementById('waitlistForm') || document.getElementById('updateFo
 
             setLoadingState('waitlistForm', 'waitlistSubmitBtn', 'waitlistLoading', true);
 
-            const courseType = document.getElementById('courseType').value;
-            const artType = document.getElementById('artType').value;
+            let courseType = document.getElementById('courseType').value;
+            let artType = document.getElementById('artType').value;
+
+            // Handle "Other" values
+            if (courseType === 'Other') {
+                const otherVal = document.getElementById('courseTypeOther').value;
+                if (otherVal) courseType = `Other: ${otherVal}`;
+            }
+            if (artType === 'Other') {
+                const otherVal = document.getElementById('artTypeOther').value;
+                if (otherVal) artType = `Other: ${otherVal}`;
+            }
+
 
             try {
                 const response = await submitWaitlistForm(userEmail, courseType, artType, false);
@@ -333,12 +423,24 @@ if (document.getElementById('waitlistForm') || document.getElementById('updateFo
         document.getElementById('updateForm').addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const userEmail = getFromLocalStorage(CONFIG.STORAGE_KEYS.USER_EMAIL);
-            const courseType = document.getElementById('updateCourseType').value;
-            const artType = document.getElementById('updateArtType').value;
+            setLoadingState('waitlistForm', 'waitlistSubmitBtn', 'waitlistLoading', true);
+
+            let courseType = document.getElementById('updateCourseType').value;
+            let artType = document.getElementById('updateArtType').value;
+
+            // Handle "Other" values
+            if (courseType === 'Other') {
+                const otherVal = document.getElementById('updateCourseTypeOther').value;
+                if (otherVal) courseType = `Other: ${otherVal}`;
+            }
+            if (artType === 'Other') {
+                const otherVal = document.getElementById('updateArtTypeOther').value;
+                if (otherVal) artType = `Other: ${otherVal}`;
+            }
 
             try {
                 const response = await submitWaitlistForm(userEmail, courseType, artType, true);
+
 
                 if (response.success) {
                     // Update displayed values

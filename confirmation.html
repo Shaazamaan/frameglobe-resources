@@ -80,10 +80,11 @@
                         <div class="bonus-icon">🎟️</div>
                         <div class="bonus-details">
                             <h3>₹100 Course Discount</h3>
-                            <p>Save money when we officially launch.</p>
+                            <p>Exclusive safe-list for <span id="courseNameOffer">your chosen course</span>.</p>
                             <span class="value-tag">Value: ₹100</span>
                         </div>
                     </div>
+
                 </div>
 
                 <div class="price-breakdown">
@@ -147,9 +148,13 @@
                             <option value="Anime/Manga">Anime/Manga Style</option>
                             <option value="Cartoon/Comic">Cartoon/Comic Art</option>
                             <option value="Traditional Art">Traditional Art</option>
-                            <option value="Mixed Media">Mixed Media</option>
+                            <option value="Cartoons">Cartoons</option>
+                            <option value="Other">Other (Type Below)</option>
                         </select>
+                        <input type="text" id="artTypeOther" class="hidden mt-2"
+                            placeholder="Tell us what art style...">
                     </div>
+
 
                     <button type="submit" class="submit-btn" id="waitlistSubmitBtn">
                         <span class="btn-text">Join Waiting List</span>
@@ -224,9 +229,13 @@
                             <option value="Anime/Manga">Anime/Manga Style</option>
                             <option value="Cartoon/Comic">Cartoon/Comic Art</option>
                             <option value="Traditional Art">Traditional Art</option>
-                            <option value="Mixed Media">Mixed Media</option>
+                            <option value="Cartoons">Cartoons</option>
+                            <option value="Other">Other (Type Below)</option>
                         </select>
+                        <input type="text" id="updateArtTypeOther" class="hidden mt-2"
+                            placeholder="Tell us art style...">
                     </div>
+
 
                     <button type="submit" class="submit-btn">
                         <span class="btn-text">Update Preferences</span>

@@ -52,7 +52,9 @@
                         </label>
                         <input type="text" id="name" name="name" required placeholder="Enter your full name"
                             autocomplete="name">
+                        <span class="error-msg" id="nameError"></span>
                     </div>
+
 
                     <div class="form-group">
                         <label for="city">
@@ -61,6 +63,7 @@
                         </label>
                         <input type="text" id="city" name="city" required placeholder="Where are you from?"
                             autocomplete="address-level2">
+                        <span class="error-msg" id="cityError"></span>
                     </div>
 
                     <div class="form-group">
@@ -70,6 +73,7 @@
                         </label>
                         <input type="email" id="email" name="email" required placeholder="your@email.com"
                             autocomplete="email">
+                        <span class="error-msg" id="emailError"></span>
                     </div>
 
                     <div class="form-group">
@@ -79,7 +83,9 @@
                         </label>
                         <input type="tel" id="phone" name="phone" required placeholder="+91 12345 67890"
                             autocomplete="tel">
+                        <span class="error-msg" id="phoneError"></span>
                     </div>
+
 
                     <div class="privacy-notice">
                         <input type="checkbox" id="consent" name="consent" required>
