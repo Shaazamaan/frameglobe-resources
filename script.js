@@ -2,8 +2,8 @@
 // CONFIGURATION
 // ============================================
 const CONFIG = {
-    // ✅ Google Apps Script Backend URL - AUTOMATED!
-    BACKEND_URL: 'https://script.google.com/macros/s/AKfycbw7eeRTCQEXIDbLvrKD7YIHLSybXyxqozA1LpCMdiaD5dzFIU34fWPd8pq1guGXsBmZEQ/exec',
+    // ✅ Google Apps Script Backend URL - FIXED & STABLE!
+    BACKEND_URL: 'https://script.google.com/macros/s/AKfycbwG-0B1rNliyZovesBoaPEuUlSzrG1vKfzhQx7PUcXtDRBZVoa_hcwFFgVyC5UYLMz8cg/exec',
 
     // LocalStorage keys
     STORAGE_KEYS: {
@@ -56,12 +56,13 @@ async function submitLeadForm(formData) {
     const response = await fetch(CONFIG.BACKEND_URL, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'text/plain',
         },
         body: JSON.stringify({
             action: 'submit-lead',
             ...formData
         })
+
     });
 
     if (!response.ok) {
@@ -75,7 +76,7 @@ async function submitWaitlistForm(email, courseType, artType, isUpdate = false) 
     const response = await fetch(CONFIG.BACKEND_URL, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'text/plain',
         },
         body: JSON.stringify({
             action: isUpdate ? 'update-waitlist' : 'submit-waitlist',
@@ -83,6 +84,7 @@ async function submitWaitlistForm(email, courseType, artType, isUpdate = false) 
             courseType,
             artType
         })
+
     });
 
     if (!response.ok) {
@@ -472,9 +474,10 @@ if (document.getElementById('resourceTableBody')) {
         try {
             const response = await fetch(CONFIG.BACKEND_URL, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'text/plain' },
                 body: JSON.stringify(data)
             });
+
             const result = await response.json();
             if (result.success) {
                 document.getElementById('userModal').classList.add('hidden');
@@ -500,9 +503,10 @@ if (document.getElementById('resourceTableBody')) {
         try {
             const response = await fetch(CONFIG.BACKEND_URL, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'text/plain' },
                 body: JSON.stringify(data)
             });
+
             const result = await response.json();
 
             if (result.success) {
@@ -584,8 +588,9 @@ window.deleteUser = async (userEmail) => {
     const adminEmail = getFromLocalStorage(CONFIG.STORAGE_KEYS.USER_EMAIL);
     const response = await fetch(CONFIG.BACKEND_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({ action: 'delete-user', adminEmail, userEmail })
+
     });
     const result = await response.json();
     if (result.success) loadUsers(adminEmail);
@@ -644,13 +649,14 @@ window.deleteResource = async (postId) => {
     try {
         const response = await fetch(CONFIG.BACKEND_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'text/plain' },
             body: JSON.stringify({
                 action: 'delete-resource',
                 adminEmail: adminEmail,
                 postId: postId
             })
         });
+
         const result = await response.json();
         if (result.success) {
             await loadResources(adminEmail);
