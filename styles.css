@@ -139,6 +139,51 @@ body {
     }
 }
 
+/* Form Footer & Login Link */
+.form-footer {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary); /* Adjusted to use existing variable */
+}
+
+.login-link {
+    color: var(--color-primary); /* Adjusted to use existing variable */
+    text-decoration: none;
+    font-weight: 600;
+    transition: all var(--transition-normal); /* Adjusted to use existing variable */
+}
+
+.login-link:hover {
+    color: var(--color-primary-light); /* Adjusted to use existing variable */
+    text-decoration: underline;
+}
+
+/* Error Messages */
+.error-message {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Page Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.form-card, .download-card {
+    animation: fadeIn 0.6s ease-out forwards;
+}
 .hero-title {
     font-size: 2.5rem;
     font-weight: 700;

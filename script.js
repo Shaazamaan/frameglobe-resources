@@ -338,3 +338,188 @@ if (document.getElementById('waitlistForm') || document.getElementById('updateFo
         });
     }
 }
+// ============================================
+// LOGIN.HTML - LOGIN PAGE
+// ============================================
+if (document.getElementById('loginForm')) {
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById('loginEmail').value;
+        const errorEl = document.getElementById('loginError');
+        const submitBtn = document.getElementById('loginSubmitBtn');
+        const loadingState = document.getElementById('loginLoading');
+
+        // Reset state
+        errorEl.classList.add('hidden');
+        setLoadingState('loginForm', 'loginSubmitBtn', 'loginLoading', true);
+
+        try {
+            const userData = await checkExistingUser(email);
+
+            if (userData && userData.exists) {
+                // User found - save to local storage
+                saveToLocalStorage(email, userData.name || '');
+
+                // Redirect based on role
+                if (userData.isAdmin) {
+                    window.location.href = 'admin.html';
+                } else {
+                    window.location.href = 'index.html';
+                }
+            } else {
+                // User not found
+                errorEl.classList.remove('hidden');
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            alert('Something went wrong. Please try again.');
+        } finally {
+            setLoadingState('loginForm', 'loginSubmitBtn', 'loginLoading', false);
+        }
+    });
+}
+// ============================================
+// ADMIN.HTML - DASHBOARD LOGIC
+// ============================================
+if (document.getElementById('resourceTableBody')) {
+    window.addEventListener('DOMContentLoaded', async () => {
+        const adminEmail = getFromLocalStorage(CONFIG.STORAGE_KEYS.USER_EMAIL);
+        if (!adminEmail) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        await loadResources(adminEmail);
+    });
+
+    const modal = document.getElementById('resourceModal');
+    const resourceForm = document.getElementById('resourceForm');
+
+    document.getElementById('addResourceBtn').addEventListener('click', () => {
+        document.getElementById('modalTitle').textContent = 'Add New Resource';
+        resourceForm.reset();
+        document.getElementById('originalPostId').value = '';
+        modal.classList.remove('hidden');
+    });
+
+    document.getElementById('closeModalBtn').addEventListener('click', () => {
+        modal.classList.add('hidden');
+    });
+
+    resourceForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const adminEmail = getFromLocalStorage(CONFIG.STORAGE_KEYS.USER_EMAIL);
+
+        const data = {
+            action: 'upsert-resource',
+            adminEmail: adminEmail,
+            postId: document.getElementById('postId').value,
+            resourceName: document.getElementById('resourceName').value,
+            downloadLink: document.getElementById('downloadLink').value
+        };
+
+        try {
+            const response = await fetch(CONFIG.BACKEND_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+
+            if (result.success) {
+                modal.classList.add('hidden');
+                await loadResources(adminEmail);
+            } else {
+                alert('Error: ' + result.error);
+            }
+        } catch (error) {
+            console.error('Error saving resource:', error);
+        }
+    });
+}
+
+async function loadResources(email) {
+    const tableBody = document.getElementById('resourceTableBody');
+    if (!tableBody) return;
+
+    try {
+        const response = await fetch(`${CONFIG.BACKEND_URL}?action=get-all-resources&email=${encodeURIComponent(email)}`);
+        const result = await response.json();
+
+        if (result.success) {
+            tableBody.innerHTML = '';
+            result.resources.forEach(res => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${res.postId}</td>
+                    <td>${res.resourceName}</td>
+                    <td class="link-cell">${res.downloadLink.substring(0, 30)}...</td>
+                    <td class="action-btns">
+                        <button class="btn-small btn-edit" style="background:var(--color-secondary)" onclick="copyResourceLink('${res.postId}', this)">Copy Link</button>
+                        <button class="btn-small btn-edit" onclick="editResource('${res.postId}', '${res.resourceName}', '${res.downloadLink}')">Edit</button>
+                        <button class="btn-small btn-delete" onclick="deleteResource('${res.postId}')">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        } else {
+            // If not an admin, redirect back
+            window.location.href = 'login.html';
+        }
+    } catch (error) {
+        console.error('Error loading resources:', error);
+    }
+}
+
+window.editResource = (postId, name, link) => {
+    document.getElementById('modalTitle').textContent = 'Edit Resource';
+    document.getElementById('postId').value = postId;
+    document.getElementById('resourceName').value = name;
+    document.getElementById('downloadLink').value = link;
+    document.getElementById('originalPostId').value = postId;
+    document.getElementById('resourceModal').classList.remove('hidden');
+};
+
+window.deleteResource = async (postId) => {
+    if (!confirm(`Are you sure you want to delete ${postId}?`)) return;
+
+    const adminEmail = getFromLocalStorage(CONFIG.STORAGE_KEYS.USER_EMAIL);
+    try {
+        const response = await fetch(CONFIG.BACKEND_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                action: 'delete-resource',
+                adminEmail: adminEmail,
+                postId: postId
+            })
+        });
+        const result = await response.json();
+        if (result.success) {
+            await loadResources(adminEmail);
+        } else {
+            alert('Delete failed: ' + result.error);
+        }
+    } catch (error) {
+        console.error('Error deleting resource:', error);
+    }
+};
+
+window.copyResourceLink = (postId, btn) => {
+    const baseUrl = window.location.origin + window.location.pathname.replace('admin.html', 'index.html');
+    const fullUrl = `${baseUrl}?post=${postId}`;
+
+    navigator.clipboard.writeText(fullUrl).then(() => {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<span>Copied! ✅</span>';
+        btn.style.background = '#10b981';
+
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.style.background = '';
+        }, 2000);
+    }).catch(err => {
+        console.error('Failed to copy: ', err);
+    });
+};
