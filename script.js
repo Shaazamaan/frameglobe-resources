@@ -198,9 +198,13 @@ if (document.getElementById('leadForm')) {
                 alert('Error submitting form. Please try again.');
             }
         } catch (error) {
-            console.error('Error:', error);
-            alert('Something went wrong. Please try again.');
+            console.error('Submission error:', error);
+            const errorMsg = error.message.includes('Unexpected token')
+                ? 'Server Error: The backend script crashed. Please ensure you ran "setupSheets" in Google Apps Script.'
+                : 'Connection Error: ' + error.message;
+            alert(errorMsg);
         } finally {
+
             setLoadingState('leadForm', 'submitBtn', 'loadingState', false);
         }
     });
@@ -375,8 +379,12 @@ if (document.getElementById('loginForm')) {
             }
         } catch (error) {
             console.error('Login error:', error);
-            alert('Something went wrong. Please try again.');
+            const errorMsg = error.message.includes('Unexpected token')
+                ? 'Server Error: Please ensure you ran "setupSheets" in Google Apps Script and re-deployed.'
+                : 'Connection Error: ' + error.message;
+            alert(errorMsg);
         } finally {
+
             setLoadingState('loginForm', 'loginSubmitBtn', 'loginLoading', false);
         }
     });
